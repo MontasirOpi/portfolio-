@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #0B0D0F;
+    color: #A8B0B8;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B0D0F;
+  border-left: 1px solid #1B1F24;
+}
+::-webkit-scrollbar-thumb {
+  background: #4D5B3D;
+  border: 1px solid #95FF00;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #95FF00;
+}
+
+/* CRT and HUD Tactical Elements */
+.crt-grid {
+  position: relative;
+}
+
+.crt-grid::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: 
+    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 10;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Scanlines Animation */
+.scanline-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanline-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(149, 255, 0, 0) 0%,
+    rgba(149, 255, 0, 0.08) 10%,
+    rgba(149, 255, 0, 0.15) 50%,
+    rgba(149, 255, 0, 0.08) 90%,
+    rgba(149, 255, 0, 0) 100%
+  );
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Military Grid Overlay */
+.military-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(77, 91, 61, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(77, 91, 61, 0.07) 1px, transparent 1px);
+  position: relative;
+}
+
+.military-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 20%, #0B0D0F 80%);
+  pointer-events: none;
+}
+
+/* Noise Overlay */
+.noise-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Glow effects */
+.hud-glow {
+  box-shadow: 0 0 15px rgba(149, 255, 0, 0.2);
+}
+
+.hud-glow-intense {
+  box-shadow: 0 0 25px rgba(149, 255, 0, 0.45);
+}
+
+.text-hud-glow {
+  text-shadow: 0 0 8px rgba(149, 255, 0, 0.6);
+}
+
+/* Tactical Corner Borders helper */
+.tactical-border {
+  position: relative;
+  border: 1px solid rgba(77, 91, 61, 0.3);
+}
+
+.tactical-border::before,
+.tactical-border::after,
+.tactical-border > .corner-tl,
+.tactical-border > .corner-br {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-color: #95FF00;
+  border-style: solid;
+  pointer-events: none;
+}
+
+.tactical-border::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.tactical-border::after {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+/* We can use standard element children for bottom corners */
+.tactical-corner-bl {
+  position: absolute;
+  bottom: -1px;
+  left: -1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid #95FF00;
+  border-left: 2px solid #95FF00;
+  pointer-events: none;
+}
+
+.tactical-corner-br {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 8px;
+  height: 8px;
+  border-bottom: 2px solid #95FF00;
+  border-right: 2px solid #95FF00;
+  pointer-events: none;
+}
+
+/* Radar Sweep Effect */
+@keyframes radar-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-sweep-indicator {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background: conic-gradient(from 0deg, rgba(149, 255, 0, 0.12) 0deg, rgba(149, 255, 0, 0.02) 180deg, transparent 270deg, transparent 360deg);
+  animation: radar-sweep 6s linear infinite;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+/* Typewriter animation helper */
+.cursor-blink::after {
+  content: "|";
+  animation: blink 1s step-start infinite;
+  color: #95FF00;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Glitch typography */
+.glitch-text {
+  position: relative;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -1px 0 #ff00c1;
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -1px 0 #00fff9, 0 1px #00fff9;
+  clip: rect(85px, 450px, 140px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(15px, 9999px, 66px, 0); }
+  5% { clip: rect(32px, 9999px, 87px, 0); }
+  10% { clip: rect(89px, 9999px, 12px, 0); }
+  15% { clip: rect(3px, 9999px, 40px, 0); }
+  20% { clip: rect(61px, 9999px, 98px, 0); }
+  25% { clip: rect(110px, 9999px, 2px, 0); }
+  30% { clip: rect(88px, 9999px, 73px, 0); }
+  35% { clip: rect(5px, 9999px, 49px, 0); }
+  40% { clip: rect(79px, 9999px, 114px, 0); }
+  45% { clip: rect(122px, 9999px, 30px, 0); }
+  50% { clip: rect(8px, 9999px, 88px, 0); }
+  55% { clip: rect(54px, 9999px, 10px, 0); }
+  60% { clip: rect(98px, 9999px, 137px, 0); }
+  65% { clip: rect(2px, 9999px, 53px, 0); }
+  70% { clip: rect(119px, 9999px, 90px, 0); }
+  75% { clip: rect(43px, 9999px, 128px, 0); }
+  80% { clip: rect(6px, 9999px, 7px, 0); }
+  85% { clip: rect(87px, 9999px, 115px, 0); }
+  90% { clip: rect(135px, 9999px, 43px, 0); }
+  95% { clip: rect(18px, 9999px, 92px, 0); }
+  100% { clip: rect(75px, 9999px, 120px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(111px, 9999px, 143px, 0); }
+  5% { clip: rect(7px, 9999px, 56px, 0); }
+  10% { clip: rect(90px, 9999px, 18px, 0); }
+  15% { clip: rect(44px, 9999px, 99px, 0); }
+  20% { clip: rect(132px, 9999px, 5px, 0); }
+  25% { clip: rect(51px, 9999px, 122px, 0); }
+  30% { clip: rect(20px, 9999px, 75px, 0); }
+  35% { clip: rect(99px, 9999px, 11px, 0); }
+  40% { clip: rect(12px, 9999px, 87px, 0); }
+  45% { clip: rect(88px, 9999px, 145px, 0); }
+  50% { clip: rect(6px, 9999px, 63px, 0); }
+  55% { clip: rect(124px, 9999px, 9px, 0); }
+  60% { clip: rect(35px, 9999px, 111px, 0); }
+  65% { clip: rect(98px, 9999px, 54px, 0); }
+  70% { clip: rect(14px, 9999px, 90px, 0); }
+  75% { clip: rect(66px, 9999px, 128px, 0); }
+  80% { clip: rect(49px, 9999px, 2px, 0); }
+  85% { clip: rect(104px, 9999px, 76px, 0); }
+  90% { clip: rect(3px, 9999px, 119px, 0); }
+  95% { clip: rect(138px, 9999px, 45px, 0); }
+  100% { clip: rect(80px, 9999px, 102px, 0); }
+}
+
+/* Tactical clip-path corner button */
+.btn-tactical {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.btn-tactical-reverse {
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
