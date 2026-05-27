@@ -1,7 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { playHoverBeep } from "../utils/audio";
-import { Award, Target, Trophy, Flame, ShieldAlert } from "lucide-react";
+import { Award, Target, Trophy, Flame } from "lucide-react";
 
 export default function Achievements() {
   const medals = [

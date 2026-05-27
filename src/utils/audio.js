@@ -75,7 +75,9 @@ export const playSelectSweep = () => {
     
     osc.start();
     osc.stop(audioCtx.currentTime + 0.2);
-  } catch (e) {}
+  } catch (error) {
+    console.warn("Failed to play select sweep:", error);
+  }
 };
 
 // Play radio static burst
@@ -111,5 +113,7 @@ export const playRadioStatic = () => {
     gainNode.connect(audioCtx.destination);
     
     noiseNode.start();
-  } catch (e) {}
+  } catch (error) {
+    console.warn("Failed to play radio static:", error);
+  }
 };

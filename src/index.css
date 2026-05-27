@@ -1,9 +1,47 @@
 @import "tailwindcss";
 
+@theme {
+  --color-theme-primary: var(--theme-primary);
+  --color-theme-secondary: var(--theme-secondary);
+  --color-theme-accent: var(--theme-accent);
+  --color-theme-bg: var(--theme-bg);
+  --color-theme-card: var(--theme-card);
+  --color-theme-text: var(--theme-text);
+  --color-theme-text-sub: var(--theme-text-sub);
+  --font-theme: var(--theme-font);
+  --shadow-theme-glow: var(--theme-shadow);
+}
+
+.theme-cod {
+  --theme-primary: #95FF00;
+  --theme-secondary: #95FF00;
+  --theme-accent: #4D5B3D;
+  --theme-bg: #0B0D0F;
+  --theme-card: rgba(27, 31, 36, 0.85);
+  --theme-text: #A8B0B8;
+  --theme-text-sub: #4D5B3D;
+  --theme-font: 'Orbitron', sans-serif;
+  --theme-shadow: 0 0 15px rgba(149, 255, 0, 0.2);
+}
+
+.theme-mobile-dev {
+  --theme-primary: #8B5CF6; /* Soft Purple */
+  --theme-secondary: #22D3EE; /* Cyan Accent */
+  --theme-accent: #334155; /* Slate Gray */
+  --theme-bg: #0F172A; /* Deep Blue background */
+  --theme-card: rgba(15, 23, 42, 0.65); /* Frosted Glass Base */
+  --theme-text: #F8FAFC; /* Slate White */
+  --theme-text-sub: #64748B; /* Light Slate Gray */
+  --theme-font: 'Inter', sans-serif;
+  --theme-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
+
 @layer base {
   body {
-    background-color: #0B0D0F;
-    color: #A8B0B8;
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    font-family: var(--theme-font);
+    transition: background-color 0.8s ease-in-out, color 0.5s ease-in-out;
   }
 }
 
@@ -13,17 +51,19 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B0D0F;
-  border-left: 1px solid #1B1F24;
+  background: var(--theme-bg);
+  transition: background 0.8s ease;
 }
 ::-webkit-scrollbar-thumb {
-  background: #4D5B3D;
-  border: 1px solid #95FF00;
+  background: var(--theme-accent);
+  border: 1px solid var(--theme-primary);
   border-radius: 3px;
+  transition: background 0.5s ease, border-color 0.5s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #95FF00;
+  background: var(--theme-primary);
 }
+
 
 /* CRT and HUD Tactical Elements */
 .crt-grid {
@@ -295,3 +335,55 @@
 .btn-tactical-reverse {
   clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
 }
+
+/* ==========================================
+   MOBILE APP DEVELOPER THEME STYLING OVERRIDES
+   ========================================== */
+
+/* Deactivate COD military grids, overlays, scanlines and CRT grids */
+.theme-mobile-dev .crt-grid::before,
+.theme-mobile-dev .scanline-container::after,
+.theme-mobile-dev .military-grid::after,
+.theme-mobile-dev .noise-overlay {
+  display: none !important;
+}
+
+.theme-mobile-dev .military-grid {
+  background-image: none !important;
+}
+
+/* Glassmorphism panel base style */
+.theme-mobile-dev .glass-panel {
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Frosted glass interactive cards */
+.theme-mobile-dev .glass-card {
+  background: rgba(30, 41, 59, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-mobile-dev .glass-card:hover {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Floating animated gradient blobs */
+.theme-mobile-dev .blob-purple {
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%);
+}
+
+.theme-mobile-dev .blob-cyan {
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, transparent 70%);
+}
+

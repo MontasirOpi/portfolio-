@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { playHoverBeep } from "../utils/audio";
+import { useTheme } from "../context/ThemeContext";
 
 export default function TacticalCursor() {
+  const { theme } = useTheme();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hidden, setHidden] = useState(true);
   const [clicked, setClicked] = useState(false);
@@ -93,6 +95,8 @@ export default function TacticalCursor() {
 
   if (isMobile || hidden) return null;
 
+  const isCod = theme === "cod";
+
   return (
     <div
       className="fixed top-0 left-0 pointer-events-none z-[99999] -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out"
@@ -101,25 +105,38 @@ export default function TacticalCursor() {
         top: `${position.y}px`,
       }}
     >
-      {/* Outer crosshair brackets */}
+      {/* Outer crosshair / glowing tracking ring */}
       <div
-        className={`relative w-8 h-8 flex items-center justify-center transition-all duration-300 border border-[#95FF00]/40 rounded-full ${
-          clicked ? "scale-75 border-[#95FF00]" : ""
-        } ${linkHovered ? "scale-[1.6] border-[#95FF00] bg-[#95FF00]/5 rotate-45" : ""}`}
+        className={`relative flex items-center justify-center transition-all duration-300 rounded-full ${
+          isCod
+            ? `w-8 h-8 border border-[#95FF00]/40 ${
+                clicked ? "scale-75 border-[#95FF00]" : ""
+              } ${linkHovered ? "scale-[1.6] border-[#95FF00] bg-[#95FF00]/5 rotate-45" : ""}`
+            : `w-7 h-7 border border-[#8B5CF6]/50 bg-[#8B5CF6]/5 ${
+                clicked ? "scale-75 border-[#22D3EE]" : ""
+              } ${linkHovered ? "scale-[1.8] border-[#22D3EE]/80 bg-[#22D3EE]/10" : ""}`
+        }`}
       >
-        {/* Four crosshair tick lines */}
-        <div className="absolute top-0 w-0.5 h-1.5 bg-[#95FF00]"></div>
-        <div className="absolute bottom-0 w-0.5 h-1.5 bg-[#95FF00]"></div>
-        <div className="absolute left-0 w-1.5 h-0.5 bg-[#95FF00]"></div>
-        <div className="absolute right-0 w-1.5 h-0.5 bg-[#95FF00]"></div>
+        {/* Four tactical crosshair tick lines (COD Theme only) */}
+        {isCod && (
+          <>
+            <div className="absolute top-0 w-0.5 h-1.5 bg-[#95FF00]"></div>
+            <div className="absolute bottom-0 w-0.5 h-1.5 bg-[#95FF00]"></div>
+            <div className="absolute left-0 w-1.5 h-0.5 bg-[#95FF00]"></div>
+            <div className="absolute right-0 w-1.5 h-0.5 bg-[#95FF00]"></div>
+          </>
+        )}
 
         {/* Dynamic Inner dot */}
         <div
-          className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
-            linkHovered ? "bg-[#95FF00] scale-150" : "bg-[#95FF00]/80"
+          className={`rounded-full transition-all duration-200 ${
+            isCod
+              ? `w-1.5 h-1.5 ${linkHovered ? "bg-[#95FF00] scale-150" : "bg-[#95FF00]/80"}`
+              : `w-2 h-2 ${linkHovered ? "bg-[#22D3EE] scale-[1.7]" : "bg-[#8B5CF6]"}`
           }`}
         />
       </div>
     </div>
   );
 }
+
